@@ -174,7 +174,6 @@ def check_endpoints_count():
             (endpoint,))
         rows = dbCursor.fetchall()
         result["count"] = rows[0]['cnt'];
-        #result = rows[0]['cnt']
         dbCursor.close()
     finally:
         connectionPool.putconn(dbConnection)

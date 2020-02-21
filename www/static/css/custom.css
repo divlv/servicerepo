@@ -1,4 +1,7 @@
 /* stylelint-disable selector-list-comma-newline-after */
+html {
+  scroll-behavior: smooth;
+}
 
 .footer {
     position: fixed;
