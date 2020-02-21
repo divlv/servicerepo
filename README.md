@@ -1,2 +1,4 @@
-# servicerepo
-REST services repository
+# Service Repo
+
+Searchable repository of REST/JSON endpoints
+
