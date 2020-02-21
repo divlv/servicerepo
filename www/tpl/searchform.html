@@ -1,0 +1,64 @@
+
+    <div class="col-md-12 order-md-1">
+        <h4 class="mb-3">Find service</h4>
+        <form id="searchform" class="needs-validation" method="get" action="/dosearch" novalidate>
+
+            <div class="mb-3 endpoint-group">
+                <label for="searchString">Find service by JSON key, tag, etc.</label>
+                <input name="searchString" class="form-control" id="searchString" placeholder="jsonkey, tag"
+                       value="{{ searchString }}">
+                <div class="invalid-feedback">
+                    Empty search query
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="jsontype" id="incoming" value="incomingjson" {{incomingChecked}}>
+                    <label class="form-check-label" for="incoming">
+                        Incoming JSON
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="jsontype" id="outgoing" value="outgoingjson" {{outgoingChecked}}>
+                    <label class="form-check-label" for="outgoing">
+                        Outgoing JSON
+                    </label>
+                </div>
+            </div>
+
+            <hr class="mb-4">
+
+            <div class="row">
+                  <div class="col-md-9">
+            <button id="searchbutton" name="savebutton" class="btn btn-info btn-block" type="submit"><i class="fas fa-search"></i> Find service
+            </button>
+                  </div>
+                  <div class="col-md-3">
+            <a id="showall" href="/dosearch?searchString=" class="btn btn-primary btn-block">Show all</a>
+                  </div>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#searchString').focus();
+        });
+
+
+        $('#searchform').submit(function () {
+
+            if ($("#searchString").val().trim() == "") {
+                var c = confirm("Show all saved services?");
+                return c;
+            } else {
+                return true;
+            }
+
+        });
+
+
+
+    </script>

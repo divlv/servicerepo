@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" lang="ru">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+        <title>{{pageTitle}}</title>
+
+        <meta name="robots" content="NOINDEX, NOFOLLOW">
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}" type="text/css"
+              media="screen, projection" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+                      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+                      crossorigin="anonymous">
+
+
+
+        <script type="text/javascript">
+            function scrollToTop() {
+                $('html, body').animate({
+                                            scrollTop: $("#body").offset().top
+                                        }, 500);
+            }
+        </script>
+
+        <script
+                src="//code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+
+        <link href="{{ url_for('static', filename='css/prism.css') }}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/custom.css') }}" type="text/css" media="screen, projection" />
+
+    </head>
+    <body id="body">
+        {% include 'header.html' %}
+
+        {% if bodyhtml=='main' %}
+        {% include 'main.html' %}
+        {% endif %}
+
+        {% if bodyhtml=='inserted' %}
+        {% include 'inserted.html' %}
+        {% endif %}
+
+        {% if bodyhtml=='search' %}
+        {% include 'search.html' %}
+        {% endif %}
+
+        {% if bodyhtml=='searchresult' %}
+        {% include 'searchresult.html' %}
+        {% endif %}
+
+        {% include 'footer.html' %}
+
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>-->
+
+        <!--<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>-->
+
+
+        <script type="text/javascript">
+        </script>
+        <script src="{{ url_for('static',filename='js/prism.js') }}"></script>
+<!-- #GTO -->
+    </body>
+
+</html>

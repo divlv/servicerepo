@@ -1,0 +1,94 @@
+<main role="main" class="no-container">
+    {% include 'searchform.html' %}
+
+    <div class="no-container col-md-12">
+        <div class="row">
+
+            {% if resultsCount == 0 %}
+            <div class="col">
+            <hr />
+            <div class="alert alert-warning" role="alert">
+                Nothing found
+            </div>
+            </div>
+            {% endif %}
+        </div>
+            {% if resultsCount >0 %}
+        <div class="row">
+            &nbsp;<br />
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div id="list-example" class="list-group">
+                    {% for r in rows %}
+
+                    {% if "external"==r.area %}
+                    {% set areaIcon = "fa-file-export" %}
+                    {% endif %}
+
+                    {% if "internal"==r.area %}
+                    {% set areaIcon = "fa-cogs" %}
+                    {% endif %}
+
+                    <a class="list-group-item list-group-item-action text-primary {{ r.area }}Service" title="{{ r.area }}" href="#list-item-{{ r.id }}"><span class="{{ r.method }}prefix"><i class="fas {{areaIcon}}"></i> &nbsp; {{ r.method }}:</span> {{ r.endpoint }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col">
+                <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
+                    {% for r in rows %}
+
+                    {% if "external"==r.area %}
+                    {% set areaIcon = "fa-file-export" %}
+                    {% endif %}
+
+                    {% if "internal"==r.area %}
+                    {% set areaIcon = "fa-cogs" %}
+                    {% endif %}
+                    
+                    <h4 id="list-item-{{ r.id }}" class="p-1 mb-2 bg-light text-primary {{ r.area }}Service" title="{{ r.area }}"><span title="{{ r.area }}" class="{{ r.method }}prefix"><i class="fas {{areaIcon}}"></i> {{ r.method }}:</span>&nbsp;&nbsp;{{ r.endpoint }}</h4>
+
+                    {% for t in r.tags.tags %}
+                    <h4 style="display: inline-block"><a title="Search by tag: {{ t }}" href="/dosearch?searchString={{ t }}&amp;jsontype=incoming"><span class="badge badge-success">{{ t }}</span></a></h4>
+                    {% endfor %}
+
+                    <h4 style="display: inline-block"><a title="Edit service" href="/edit/{{ r.id }}"><span class="badge badge-warning"><i class="far fa-edit"></i></span></a></h4>
+                    <h4 style="display: inline-block"><a onclick="return confirm('Really delete this?')" title="Delete service" href="/deleteitem/{{ r.id }}"><span class="badge badge-danger"><i class="far fa-trash-alt"></i></span></a></h4>
+
+                    <h5 class="text-secondary">Incoming JSON:</h5>
+                    <div class="form-group">
+                        <pre class="language-markup"><cоde id="codein-{{ r.id }}" class="language-json">{{ r.incomingjson }}</cоde></pre>
+
+                    </div>
+                    <h5 class="text-secondary">Outgoing JSON:</h5>
+                    <div class="form-group">
+                        <pre class="language-markup outgoing-markup"><cоde id="codeout-{{ r.id }}" class="language-json">{{ r.outgoingjson }}</cоde></pre>
+                    </div>
+                    <hr />
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+            {% endif %}
+
+
+
+    </div>
+
+</main><!-- /.container -->
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        {% if resultsCount >0 %}
+           {% for r in rows %}
+        Prism.highlightElement(document.getElementById('codein-{{ r.id }}'));
+        Prism.highlightElement(document.getElementById('codeout-{{ r.id }}'));
+           {% endfor %}
+        {% endif %}
+    });
+
+</script>
+

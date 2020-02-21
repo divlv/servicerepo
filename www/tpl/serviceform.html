@@ -1,0 +1,85 @@
+
+
+
+{% if edit==0 %}
+<form class="needs-validation" method="post" action="/save" novalidate>
+
+    <div class="mb-3 endpoint-group">
+        <label for="endpoint1">Service endpoint</label>
+        <input name="endpoint" class="form-control" id="endpoint1" placeholder="moneyloader" value="{{endpoint}}">
+        <div class="invalid-feedback">
+            Unique endpoint name is required
+        </div>
+    </div>
+{% endif %}
+
+{% if edit==1 %}
+<form class="needs-validation" method="post" action="/update" novalidate>
+
+    <div class="mb-3 endpoint-group">
+        <label for="endpoint2">Service endpoint</label>
+        <input name="endpoint" class="form-control" id="endpoint2" placeholder="moneyloader" value="{{endpoint}}" readonly>
+        <div class="invalid-feedback">
+            Unique endpoint name is required
+        </div>
+    </div>
+{% endif %}
+
+    <input name="itemid" type="hidden" id="itemid" value="{{itemid}}">
+
+    <div class="mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="method" id="methodGet" value="GET" {{getmethod}}>
+            <label class="form-check-label" for="methodGet">
+                GET
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="method" id="methodPost" value="POST" {{postmethod}}>
+            <label class="form-check-label" for="methodPost">
+                POST
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="area" id="internal" value="internal" {{internal}}>
+            <label class="form-check-label" for="internal">
+                Internal
+            </label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="area" id="external" value="external" {{external}}>
+            <label class="form-check-label" for="external">
+                External
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="address">Tags</label>
+        <input type="text" name="tags" class="form-control" id="address" placeholder="payment, latvia" value="{{tags}}" required>
+        <div class="invalid-feedback">
+            Please enter one or more tags
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+            <label for="incomingjson">Incoming JSON</label>
+            <textarea name="incomingjson" class="form-control" id="incomingjson" rows="7">{{incomingjson}}</textarea>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div class="form-group">
+            <label for="outgoingjson">Outgoing JSON</label>
+            <textarea name="outgoingjson" class="form-control" id="outgoingjson" rows="7">{{outgoingjson}}</textarea>
+        </div>
+    </div>
+
+    <hr class="mb-4">
+    <button id="savebutton" name="savebutton" class="btn btn-primary btn-block" type="submit">Save service
+    </button>
+</form>
