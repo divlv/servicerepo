@@ -54,6 +54,8 @@ def search_page():
                            captions=captions,
                            featured=0,
                            showslides=0,
+                           andChecked="checked",
+                           orChecked="",
                            outgoingChecked="",
                            incomingChecked="checked",
                            bodyhtml='search')
@@ -261,8 +263,19 @@ def do_search():
         outgoingChecked=""
         incomingChecked="checked"
 
-    
+    criteria = request.args.get('criteria')
+    andChecked=""
+    orChecked="checked"
+    if "or" != criteria:
+        criteria = "and"
+        andChecked="checked"
+        orChecked=""
+
     wordsArray = []
+
+    if len(searchString.strip())>0:
+        searchString = searchString.replace('\'', '')
+
     allKeyWords = re.findall(r"[\w']+", searchString.strip())
     for keyWord in allKeyWords:
         w = str(keyWord).strip()
@@ -271,24 +284,32 @@ def do_search():
 
     wordsTuple = tuple(wordsArray)
 
-    sqlQuery = "select * from service_repo where 1=2"
-    for t in wordsTuple:
-        sqlQuery = sqlQuery + " or jsonb_path_exists(%s, '$.**.%s')" % (jsontype, t)
-
-    if len(wordsTuple)>0:
-        sqlQuery = sqlQuery + " or tags->'tags' ?| ARRAY['nosuchtag'"
+    if "or"==criteria or len(wordsTuple)==0:
+        sqlQuery = "select * from service_repo where 1=2"
         for t in wordsTuple:
-            sqlQuery = sqlQuery + ",'%s'" % t
-        sqlQuery = sqlQuery + "]"
+            sqlQuery = sqlQuery + " or jsonb_path_exists(%s, '$.**.%s')" % (jsontype, t)
 
-    if len(wordsTuple)>0:
-        sqlQuery = sqlQuery + " or queryvars->'vars' ?| ARRAY['nosuchvar'"
-        for t in wordsTuple:
-            sqlQuery = sqlQuery + ",'%s'" % t
-        sqlQuery = sqlQuery + "]"
+        if len(wordsTuple)>0:
+            sqlQuery = sqlQuery + " or tags->'tags' ?| ARRAY['nosuchtag'"
+            for t in wordsTuple:
+                sqlQuery = sqlQuery + ",'%s'" % t
+            sqlQuery = sqlQuery + "]"
 
-    if  len(wordsTuple)==0:
-        sqlQuery = sqlQuery + " or 1=1"
+        if len(wordsTuple)>0:
+            sqlQuery = sqlQuery + " or queryvars->'vars' ?| ARRAY['nosuchvar'"
+            for t in wordsTuple:
+                sqlQuery = sqlQuery + ",'%s'" % t
+            sqlQuery = sqlQuery + "]"
+
+        if  len(wordsTuple)==0:
+            sqlQuery = sqlQuery + " or 1=1"
+    else:
+        # AND criteria
+        sqlQuery = "select * from service_repo where ("
+        subDivider=""
+        for w in wordsTuple:
+            sqlQuery = sqlQuery + subDivider + "jsonb_path_exists(%s, '$.**.%s') or tags->'tags' ?| ARRAY['nosuchtag','%s'] or queryvars->'vars' ?| ARRAY['nosuchvar','%s'])" % (jsontype, w, w, w)
+            subDivider=" and ("
 
     sqlQuery = sqlQuery + " ORDER BY id DESC"
 
@@ -315,6 +336,8 @@ def do_search():
                            resultsCount =resultsCount,
                            featured=0,
                            showslides=0,
+                           andChecked=andChecked,
+                           orChecked=orChecked,
                            outgoingChecked=outgoingChecked,
                            incomingChecked=incomingChecked,
                            bodyhtml='searchresult')
