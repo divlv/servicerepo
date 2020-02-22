@@ -24,6 +24,9 @@ PATH_TO_TEMPLATES = "./tpl/"
 app = Flask(__name__, template_folder=PATH_TO_TEMPLATES)
 
 
+"""
+Main starter page
+"""
 @app.route('/')
 def home_page():
     return render_template('layout.html',
@@ -42,6 +45,9 @@ def home_page():
                            outgoingjson="",
                            bodyhtml='main')
 
+"""
+Initial search window (without results yet)
+"""
 @app.route('/search')
 def search_page():
     return render_template('layout.html',
@@ -53,11 +59,14 @@ def search_page():
                            bodyhtml='search')
 
 
+"""
+Saving new endpoint
+"""
 @app.route('/save', methods=['POST'])
 def map_page():
     endpoint = request.form['endpoint']
 
-    # Empty?!
+    # Prevent saving empty endpoint name.
     if str(endpoint).strip()=="":
         return redirect("/?c="+str(uuid.uuid4()), code=302)
 
@@ -112,7 +121,9 @@ def map_page():
                            bodyhtml='inserted')
 
 
-
+"""
+Edit endpoint method
+"""
 @app.route('/update', methods=['POST'])
 def update_page():
     id = request.form['itemid']
@@ -159,7 +170,9 @@ def update_page():
                            bodyhtml='inserted')
 
 
-
+"""
+On-the-fly endpoint unique name check. Called from javascript onBlur
+"""
 @app.route('/checkendpoint', methods=['POST'])
 def check_endpoints_count():
     endpoint = request.form['endpoint']
@@ -179,7 +192,9 @@ def check_endpoints_count():
         connectionPool.putconn(dbConnection)
     return result
 
-
+"""
+Delete endpoint routine
+"""
 @app.route('/deleteitem/<itemid>')
 def delete_endpoint(itemid):
     dbConnection = connectionPool.getconn()
@@ -194,7 +209,9 @@ def delete_endpoint(itemid):
         connectionPool.putconn(dbConnection)
     return redirect("/search", code=302)
 
-
+"""
+Open edit endpoint form
+"""
 @app.route('/edit/<itemid>')
 def edit_endpoint(itemid):
     dbConnection = connectionPool.getconn()
@@ -230,7 +247,9 @@ def edit_endpoint(itemid):
                            outgoingjson=json.dumps(rows[0]['outgoingjson'], indent=4, sort_keys=True),
                            bodyhtml='main')
 
-
+"""
+Main search routine
+"""
 @app.route('/dosearch', methods=['GET'])
 def do_search():
     searchString = request.args.get('searchString')
@@ -314,6 +333,6 @@ def internal_server_error(e):
 
 
 # Uncomment this line, if running in Development environment
-# i.e. not with Gunicorn
+# i.e. NOT with something like Gunicorn
+# Will be automatically commented by Docker build script
 app.run(host='0.0.0.0', port='80', threaded=True)
-
