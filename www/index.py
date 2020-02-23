@@ -1,6 +1,7 @@
 import json
 import re
 import uuid
+import srutils
 
 import psycopg2
 import psycopg2.extras
@@ -254,8 +255,9 @@ Main search routine
 """
 @app.route('/dosearch', methods=['GET'])
 def do_search():
-    searchString = request.args.get('searchString')
-    jsontype = request.args.get('jsontype')
+    searchString = srutils.getQueryStringParam(request, 'searchString')
+    searchStringTag = srutils.getQueryStringParam(request, 'searchStringTag')
+    jsontype = srutils.getQueryStringParam(request, 'jsontype')
     outgoingChecked="checked"
     incomingChecked=""
     if "outgoingjson" != jsontype:
@@ -263,7 +265,7 @@ def do_search():
         outgoingChecked=""
         incomingChecked="checked"
 
-    criteria = request.args.get('criteria')
+    criteria = srutils.getQueryStringParam(request, 'criteria')
     andChecked=""
     orChecked="checked"
     if "or" != criteria:
@@ -271,8 +273,8 @@ def do_search():
         andChecked="checked"
         orChecked=""
 
+    # JSON keys...
     wordsArray = []
-
     if len(searchString.strip())>0:
         searchString = searchString.replace('\'', '')
 
@@ -284,20 +286,35 @@ def do_search():
 
     wordsTuple = tuple(wordsArray)
 
+    # Query vars, tags is any...
+    tagsArray = []
+    if len(searchStringTag.strip())>0:
+        searchStringTag = searchStringTag.replace('\'', '')
+
+    allTagsWords = re.findall(r"[\w']+", searchStringTag.strip())
+    for keyTag in allTagsWords:
+        w = str(keyTag).strip()
+        if ""!=w:
+            tagsArray.append(w)
+
+    tagsAndWarsTuple = tuple(tagsArray)
+
+
+
     if "or"==criteria or len(wordsTuple)==0:
         sqlQuery = "select * from service_repo where 1=2"
         for t in wordsTuple:
             sqlQuery = sqlQuery + " or jsonb_path_exists(%s, '$.**.%s')" % (jsontype, t)
 
-        if len(wordsTuple)>0:
+        if len(tagsAndWarsTuple)>0:
             sqlQuery = sqlQuery + " or tags->'tags' ?| ARRAY['nosuchtag'"
-            for t in wordsTuple:
+            for t in tagsAndWarsTuple:
                 sqlQuery = sqlQuery + ",'%s'" % t
             sqlQuery = sqlQuery + "]"
 
-        if len(wordsTuple)>0:
+        if len(tagsAndWarsTuple)>0:
             sqlQuery = sqlQuery + " or queryvars->'vars' ?| ARRAY['nosuchvar'"
-            for t in wordsTuple:
+            for t in tagsAndWarsTuple:
                 sqlQuery = sqlQuery + ",'%s'" % t
             sqlQuery = sqlQuery + "]"
 
@@ -305,11 +322,29 @@ def do_search():
             sqlQuery = sqlQuery + " or 1=1"
     else:
         # AND criteria
-        sqlQuery = "select * from service_repo where ("
+        sqlQuery = "select * from service_repo where "
         subDivider=""
         for w in wordsTuple:
-            sqlQuery = sqlQuery + subDivider + "jsonb_path_exists(%s, '$.**.%s') or tags->'tags' ?| ARRAY['nosuchtag','%s'] or queryvars->'vars' ?| ARRAY['nosuchvar','%s'])" % (jsontype, w, w, w)
-            subDivider=" and ("
+            sqlQuery = sqlQuery + subDivider + "jsonb_path_exists(%s, '$.**.%s') " % (jsontype, w)
+            subDivider=" and "
+
+        if len(tagsAndWarsTuple)>0:
+            sqlQuery = sqlQuery + subDivider + "((tags->'tags' ?& ARRAY["
+            div = ""
+            for t in tagsAndWarsTuple:
+                sqlQuery = sqlQuery + div+ "'%s'" % t
+                div=","
+            sqlQuery = sqlQuery + "]) or ("
+
+            sqlQuery = sqlQuery + "queryvars->'vars' ?& ARRAY["
+            div = ""
+            for t in tagsAndWarsTuple:
+                sqlQuery = sqlQuery + div+ "'%s'" % t
+                div=","
+            sqlQuery = sqlQuery + "]))"
+
+
+
 
     sqlQuery = sqlQuery + " ORDER BY id DESC"
 
@@ -332,6 +367,7 @@ def do_search():
     return render_template('layout.html',
                            captions=captions,
                            searchString=searchString,
+                           searchStringTag=searchStringTag,
                            rows=rows,
                            resultsCount =resultsCount,
                            featured=0,
