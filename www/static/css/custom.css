@@ -37,3 +37,6 @@ html {
     color: #c82333 !important;
 }
 
+.form-control::placeholder {
+  color: #EAEAEA;
+}

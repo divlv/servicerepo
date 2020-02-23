@@ -1,79 +1,97 @@
-
+<form id="searchform" class="needs-validation" method="get" action="/dosearch" novalidate>
     <div class="col-md-12 order-md-1">
-        <h4 class="mb-3">Find service</h4>
-        <form id="searchform" class="needs-validation" method="get" action="/dosearch" novalidate>
-
-            <div class="mb-3 endpoint-group">
-                <label for="searchString">Find service by JSON key, tag, etc.</label>
-                <input name="searchString" class="form-control" id="searchString" placeholder="jsonkey, tag"
-                       value="{{ searchString }}">
-                <div class="invalid-feedback">
-                    Empty search query
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3 endpoint-group">
+                    <label for="searchString">{{ captions.cap_findsrv_desc }}</label>
+                    <input name="searchString" class="form-control" id="searchString" placeholder="jsonkey"
+                           value="{{ searchString }}">
+                    <div class="invalid-feedback">
+                        {{ captions.err_emptyq }}
+                    </div>
                 </div>
             </div>
-
-            <div class="mb-3">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="jsontype" id="incoming" value="incomingjson" {{incomingChecked}}>
-                    <label class="form-check-label" for="incoming">
-                        Incoming JSON
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="jsontype" id="outgoing" value="outgoingjson" {{outgoingChecked}}>
-                    <label class="form-check-label" for="outgoing">
-                        Outgoing JSON
-                    </label>
+            <div class="col-md-6">
+                <div class="mb-3 endpoint-group">
+                    <label for="searchStringTag">{{ captions.cap_findsrvtag_desc}}</label>
+                    <input name="searchStringTag" class="form-control" id="searchStringTag" placeholder="queryvar, tag"
+                           value="{{ searchStringTag }}">
+                    <div class="invalid-feedback">
+                        {{ captions.err_emptyq }}
+                    </div>
                 </div>
             </div>
-
-            <div class="mb-3">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="criteria" id="criteriaAnd" value="and" {{andChecked}}>
-                    <label class="form-check-label" for="criteriaAnd">
-                        AND
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="criteria" id="criteriaOr" value="or" {{orChecked}}>
-                    <label class="form-check-label" for="criteriaOr">
-                        OR
-                    </label>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="jsontype" id="incoming"
+                               value="incomingjson" {{ incomingChecked }}>
+                        <label class="form-check-label" for="incoming">
+                            {{ captions.cap_injson }}
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="jsontype" id="outgoing"
+                               value="outgoingjson" {{ outgoingChecked }}>
+                        <label class="form-check-label" for="outgoing">
+                            {{ captions.cap_outjson }}
+                        </label>
+                    </div>
                 </div>
             </div>
-
-            <hr class="mb-4">
-
-            <div class="row">
-                  <div class="col-md-9">
-            <button id="searchbutton" name="savebutton" class="btn btn-info btn-block" type="submit"><i class="fas fa-search"></i> Find service
-            </button>
-                  </div>
-                  <div class="col-md-3">
-            <a id="showall" href="/dosearch?searchString=" class="btn btn-primary btn-block">Show all</a>
-                  </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="criteria" id="criteriaAnd"
+                               value="and" {{ andChecked }}>
+                        <label class="form-check-label" for="criteriaAnd">
+                            {{ captions.cap_search_and }}
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="criteria" id="criteriaOr"
+                               value="or" {{ orChecked }}>
+                        <label class="form-check-label" for="criteriaOr">
+                            {{ captions.cap_search_or }}
+                        </label>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
+        <hr class="mb-4">
+
+        <div class="row">
+            <div class="col-md-9">
+                <button id="searchbutton" name="savebutton" class="btn btn-info btn-block" type="submit"><i
+                        class="fas fa-search"></i> {{ captions.b_find }}
+                </button>
+            </div>
+            <div class="col-md-3">
+                <a id="showall" href="/dosearch?searchString="
+                   class="btn btn-primary btn-block">{{ captions.b_findall }}</a>
+            </div>
+        </div>
+
     </div>
+</form>
 
-    <script type="text/javascript">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#searchString').focus();
+    });
 
-        $(document).ready(function () {
-            $('#searchString').focus();
-        });
+    $('#searchform').submit(function () {
 
+        if ($("#searchString").val().trim() == "") {
+            var c = confirm("{{ captions.cap_showall_conf }}");
+            return c;
+        } else {
+            return true;
+        }
 
-        $('#searchform').submit(function () {
-
-            if ($("#searchString").val().trim() == "") {
-                var c = confirm("Show all saved services?");
-                return c;
-            } else {
-                return true;
-            }
-
-        });
-
-
-
-    </script>
+    });
+</script>
