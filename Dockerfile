@@ -6,4 +6,4 @@ COPY ./requirements.txt /app/requirements.txt
 RUN mkdir -p /cache
 WORKDIR /app
 RUN pip install -r requirements.txt
-CMD ["gunicorn", "-w 4", "-b 0.0.0.0:12801", "index:app"]
+CMD ["gunicorn", "-w 4", "-b 0.0.0.0:18000", "index:app"]
