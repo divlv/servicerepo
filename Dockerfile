@@ -1,5 +1,8 @@
 FROM python:3.6-alpine
 
+# DockerHub refused to install Postgresql packages without it:
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
 COPY ./www/ /app/
 COPY ./requirements.txt /app/requirements.txt
 # "-p" - create all chain with parent dirs, if any
