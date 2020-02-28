@@ -1,27 +1,57 @@
 <form id="searchform" class="needs-validation" method="get" action="/dosearch" novalidate>
-    <div class="col-md-12 order-md-1">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3 endpoint-group">
-                    <label for="searchString">{{ captions.cap_findsrv_desc }}</label>
-                    <input name="searchString" class="form-control" id="searchString" placeholder="jsonkey"
-                           value="{{ searchString }}">
-                    <div class="invalid-feedback">
-                        {{ captions.err_emptyq }}
+    <div class="no-container col-md-12">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-simple-tab" data-toggle="tab" href="#nav-simple" role="tab"
+                   aria-controls="nav-simple" aria-selected="true">Simple search</a>
+                <!--a class="nav-item nav-link" id="nav-json-tab" data-toggle="tab" href="#nav-json" role="tab"
+                   aria-controls="nav-json" aria-selected="false">Paste JSON</a-->
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-simple" role="tabpanel" aria-labelledby="nav-simple-tab">
+
+                <div class="col-md-12 order-md-1">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3 endpoint-group">
+                                <label for="searchString">{{ captions.cap_findsrv_desc }}</label>
+                                <input name="searchString" class="form-control" id="searchString" placeholder="jsonkey"
+                                       value="{{ searchString }}">
+                                <div class="invalid-feedback">
+                                    {{ captions.err_emptyq }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3 endpoint-group">
+                                <label for="searchStringTag">{{ captions.cap_findsrvtag_desc }}</label>
+                                <input name="searchStringTag" class="form-control" id="searchStringTag"
+                                       placeholder="queryvar, tag"
+                                       value="{{ searchStringTag }}">
+                                <div class="invalid-feedback">
+                                    {{ captions.err_emptyq }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--div class="tab-pane fade" id="nav-json" role="tabpanel" aria-labelledby="nav-json-tab">
+
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label for="jsontext">JSON data to search by</label>
+                        <textarea name="jsontext" class="form-control" id="jsontext" rows="10">{{ jsontext }}</textarea>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mb-3 endpoint-group">
-                    <label for="searchStringTag">{{ captions.cap_findsrvtag_desc}}</label>
-                    <input name="searchStringTag" class="form-control" id="searchStringTag" placeholder="queryvar, tag"
-                           value="{{ searchStringTag }}">
-                    <div class="invalid-feedback">
-                        {{ captions.err_emptyq }}
-                    </div>
-                </div>
-            </div>
+
+            </div-->
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="mb-3">
@@ -86,7 +116,7 @@
 
     $('#searchform').submit(function () {
 
-        if ($("#searchString").val().trim() == "") {
+        if ($("#searchString").val().trim() == "" && $("#jsontext").val().trim() == "") {
             var c = confirm("{{ captions.cap_showall_conf }}");
             return c;
         } else {

@@ -17,8 +17,8 @@
         <div class="row">
             &nbsp;<br />
         </div>
-        <div class="row">
-            <div class="col-4">
+        <div class="row m-1">
+            <div id="resultslist" class="w-25 overflow-auto sticky-top" style="height: 400px">
                 <div id="list-example" class="list-group">
                     {% for r in rows %}
 
@@ -30,13 +30,13 @@
                     {% set areaIcon = "fa-cogs" %}
                     {% endif %}
 
-                    <a class="list-group-item list-group-item-action text-primary {{ r.area }}Service" title="{{ r.area }}" href="#list-item-{{ r.id }}"><span class="{{ r.method }}prefix"><i class="fas {{areaIcon}}"></i> &nbsp; {{ r.method }}:</span> {{ r.endpoint }}</a>
+                    <a class="list-group-item list-group-item-action text-primary {{ r.area }}Service" title="{{ r.area }}" href="#list-item-{{ r.id }}"><span class="{{ r.method }}prefix"><i class="fas {{areaIcon}}"></i>&nbsp;</span> {{ r.endpoint }}</a>
                     {% endfor %}
                 </div>
             </div>
 
-            <div class="col">
-                <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">
+            <div class="w-75">
+                <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example" style="margin-left: 5px">
                     {% for r in rows %}
 
                     {% if "external"==r.area %}
@@ -47,7 +47,8 @@
                     {% set areaIcon = "fa-cogs" %}
                     {% endif %}
                     
-                    <h4 id="list-item-{{ r.id }}" class="p-1 mb-2 bg-light text-primary {{ r.area }}Service" title="{{ r.area }}"><span title="{{ r.area }}" class="{{ r.method }}prefix"><i class="fas {{areaIcon}}"></i> {{ r.method }}:</span>&nbsp;&nbsp;{{ r.endpoint }}</h4>
+                    <h4 id="list-item-{{ r.id }}" class="p-1 mb-2 bg-light text-primary {{ r.area }}Service" title="{{ r.area }}"><span title="{{ r.area }}" class="{{ r.method }}prefix"><i class="fas {{areaIcon}}"></i></span>&nbsp;{{ r.endpoint }}</h4>
+                    <h3>{{ r.servicename}}</h3>
 
                     {% for t in r.tags.tags %}
                     <h4 style="display: inline-block"><a title="Search by tag: {{ t }}" href="/dosearch?searchString={{ t }}&amp;jsontype=incoming"><span class="badge badge-success">{{ t }}</span></a></h4>

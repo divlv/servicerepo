@@ -2,6 +2,7 @@ DROP TABLE if exists service_repo;
 CREATE TABLE service_repo( 
     id BIGSERIAL,
     endpoint varchar(254),
+    servicename varchar(254),
     queryvars jsonb,
     method varchar(10),
     area varchar(32),

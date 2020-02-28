@@ -33,6 +33,19 @@ html {
     color: #000000 !important;
 }
 
+.DELETEprefix{
+    color: #808080 !important;
+}
+
+.PUTprefix{
+    color: #808080 !important;
+}
+
+.PATCHprefix{
+    color: #808080 !important;
+}
+
+
 .GETprefix{
     color: #c82333 !important;
 }

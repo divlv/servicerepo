@@ -257,6 +257,12 @@ Main search routine
 def do_search():
     searchString = srutils.getQueryStringParam(request, 'searchString')
     searchStringTag = srutils.getQueryStringParam(request, 'searchStringTag')
+    jsontext = srutils.getQueryStringParam(request, 'jsontext')
+    if len(jsontext.strip())>0:
+        # Search ONLY by JSON data, if any. Cleanup other search strings:
+        searchString = ""
+        searchStringTag = ""
+
     jsontype = srutils.getQueryStringParam(request, 'jsontype')
     outgoingChecked="checked"
     incomingChecked=""
