@@ -400,4 +400,4 @@ def internal_server_error(e):
 # Uncomment this line, if running in Development environment
 # i.e. NOT with something like Gunicorn
 # Will be automatically commented by Docker build script
-app.run(host='0.0.0.0', port='80', threaded=True)
+#app.run(host='0.0.0.0', port='80', threaded=True)
