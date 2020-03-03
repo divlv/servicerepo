@@ -53,3 +53,7 @@ html {
 .form-control::placeholder {
   color: #EAEAEA;
 }
+
+.list-group-item.active {
+    background-color: transparent !important;
+}

@@ -1,7 +1,6 @@
 import json
 import re
 import uuid
-import srutils
 
 import psycopg2
 import psycopg2.extras
@@ -10,6 +9,7 @@ from flask import render_template, request, redirect
 from psycopg2 import pool
 
 import captions
+import srutils
 
 minConnection = 5
 maxConnection = 20
@@ -303,28 +303,26 @@ def do_search():
         if ""!=w:
             tagsArray.append(w)
 
-    tagsAndWarsTuple = tuple(tagsArray)
+    tagsAndVarsTuple = tuple(tagsArray)
 
-
-
-    if "or"==criteria or len(wordsTuple)==0:
+    if "or" == criteria or len(wordsTuple) == 0:
         sqlQuery = "select * from service_repo where 1=2"
         for t in wordsTuple:
             sqlQuery = sqlQuery + " or jsonb_path_exists(%s, '$.**.%s')" % (jsontype, t)
 
-        if len(tagsAndWarsTuple)>0:
+        if len(tagsAndVarsTuple)>0:
             sqlQuery = sqlQuery + " or tags->'tags' ?| ARRAY['nosuchtag'"
-            for t in tagsAndWarsTuple:
+            for t in tagsAndVarsTuple:
                 sqlQuery = sqlQuery + ",'%s'" % t
             sqlQuery = sqlQuery + "]"
 
-        if len(tagsAndWarsTuple)>0:
+        if len(tagsAndVarsTuple)>0:
             sqlQuery = sqlQuery + " or queryvars->'vars' ?| ARRAY['nosuchvar'"
-            for t in tagsAndWarsTuple:
+            for t in tagsAndVarsTuple:
                 sqlQuery = sqlQuery + ",'%s'" % t
             sqlQuery = sqlQuery + "]"
 
-        if  len(wordsTuple)==0:
+        if  len(tagsAndVarsTuple)==0:
             sqlQuery = sqlQuery + " or 1=1"
     else:
         # AND criteria
@@ -334,17 +332,17 @@ def do_search():
             sqlQuery = sqlQuery + subDivider + "jsonb_path_exists(%s, '$.**.%s') " % (jsontype, w)
             subDivider=" and "
 
-        if len(tagsAndWarsTuple)>0:
+        if len(tagsAndVarsTuple)>0:
             sqlQuery = sqlQuery + subDivider + "((tags->'tags' ?& ARRAY["
             div = ""
-            for t in tagsAndWarsTuple:
+            for t in tagsAndVarsTuple:
                 sqlQuery = sqlQuery + div+ "'%s'" % t
                 div=","
             sqlQuery = sqlQuery + "]) or ("
 
             sqlQuery = sqlQuery + "queryvars->'vars' ?& ARRAY["
             div = ""
-            for t in tagsAndWarsTuple:
+            for t in tagsAndVarsTuple:
                 sqlQuery = sqlQuery + div+ "'%s'" % t
                 div=","
             sqlQuery = sqlQuery + "]))"

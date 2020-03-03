@@ -51,7 +51,7 @@
                     <h3>{{ r.servicename}}</h3>
 
                     {% for t in r.tags.tags %}
-                    <h4 style="display: inline-block"><a title="Search by tag: {{ t }}" href="/dosearch?searchString={{ t }}&amp;jsontype=incoming"><span class="badge badge-success">{{ t }}</span></a></h4>
+                    <h4 style="display: inline-block"><a title="Search by tag: {{ t }}" href="/dosearch?searchStringTag={{ t }}&amp;jsontype=incoming"><span class="badge badge-success">{{ t }}</span></a></h4>
                     {% endfor %}
 
                     <h4 style="display: inline-block"><a title="Edit service" href="/edit/{{ r.id }}"><span class="badge badge-warning"><i class="far fa-edit"></i></span></a></h4>
