@@ -68,6 +68,7 @@ Saving new endpoint
 @app.route('/save', methods=['POST'])
 def map_page():
     endpoint = request.form['endpoint']
+    servicename = request.form['servicename']
 
     # Prevent saving empty endpoint name.
     if str(endpoint).strip()=="":
@@ -106,8 +107,8 @@ def map_page():
     dbConnection = connectionPool.getconn()
     try:
         dbCursor = dbConnection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        insert_query = "insert into service_repo (endpoint, queryvars, method, area, incomingjson,outgoingjson, tags) values (%s,%s,%s,%s,%s,%s,%s)"
-        dbCursor.execute(insert_query, (endpoint, json.dumps(queryVars), method, area, incomingjson, outgoingjson, json.dumps(allTagsJson)))
+        insert_query = "insert into service_repo (servicename, endpoint, queryvars, method, area, incomingjson,outgoingjson, tags) values (%s,%s,%s,%s,%s,%s,%s,%s)"
+        dbCursor.execute(insert_query, (servicename, endpoint, json.dumps(queryVars), method, area, incomingjson, outgoingjson, json.dumps(allTagsJson)))
 
         dbCursor.close()
         dbConnection.commit()
@@ -130,6 +131,7 @@ Edit endpoint method
 @app.route('/update', methods=['POST'])
 def update_page():
     id = request.form['itemid']
+    servicename = request.form['servicename']
 
     tags = request.form['tags']
     method = request.form['method']
@@ -157,8 +159,8 @@ def update_page():
     dbConnection = connectionPool.getconn()
     try:
         dbCursor = dbConnection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        update_query = "UPDATE service_repo SET method=%s, area=%s, incomingjson=%s, outgoingjson=%s, tags=%s WHERE id=%s"
-        dbCursor.execute(update_query, (method, area, incomingjson, outgoingjson, json.dumps(allTagsJson), id))
+        update_query = "UPDATE service_repo SET servicename=%s, method=%s, area=%s, incomingjson=%s, outgoingjson=%s, tags=%s WHERE id=%s"
+        dbCursor.execute(update_query, (servicename, method, area, incomingjson, outgoingjson, json.dumps(allTagsJson), id))
 
         dbCursor.close()
         dbConnection.commit()
@@ -240,6 +242,7 @@ def edit_endpoint(itemid):
                            featured=0,
                            edit=1,
                            itemid=itemid,
+                           servicename=rows[0]['servicename'],
                            endpoint=rows[0]['endpoint'],
                            getmethod="checked" if rows[0]['method'] == "GET" else "",
                            postmethod="checked" if rows[0]['method'] == "POST" else "",

@@ -27,6 +27,14 @@
 
     <input name="itemid" type="hidden" id="itemid" value="{{itemid}}">
 
+    <div class="mb-3 endpoint-group">
+        <label for="servicename">Service name</label>
+        <input name="servicename" class="form-control" id="servicename" placeholder="My super service" value="{{servicename}}">
+        <div class="invalid-feedback">
+            Add service name
+        </div>
+    </div>
+
     <div class="mb-3">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="method" id="methodGet" value="GET" {{getmethod}}>
