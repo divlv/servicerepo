@@ -12,7 +12,7 @@ Searchable repository of REST/JSON endpoints.
 ## How to use all this?
 
 Simple.
-1. Create database `servicerepo` and appropriate user. Execute SQL commands from `database/servicerepo.sql` file.
+1. Create database `servicerepo` and appropriate user. Execute SQL commands from `database/servicerepo.sql` file. ATTENTION! Use **Postgresql 12** database due to specific JSON-data syntax.
 2. Fill the database table with `parser/parser.py`: e.g. `python parser.py generated_API_reference.html`
 3. Edit your system's (e.g. Ubuntu/Debian Linux) `/etc/hosts` file: add IP record for `postgres.example.com` domain, e.g. `192.168.55.133 postgres.example.com` - use IP of your Postgresql server.
 4. Docker image is available from Docker Hub. So, simply run it like this: `docker run --net=host dimedrol/servicerepo`
