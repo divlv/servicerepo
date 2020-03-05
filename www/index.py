@@ -13,9 +13,9 @@ import srutils
 
 minConnection = 5
 maxConnection = 20
-# Using localhost - for Docker Compose start
+# Using "dbcontainer" - for Docker Compose start
 connectionPool = psycopg2.pool.ThreadedConnectionPool(minConnection, maxConnection, user="sreapp", password="scheme54inverse63Frenzy",
-                                                      host="localhost", port="5432", database="servicerepo")
+                                                      host="dbcontainer", port="5432", database="servicerepo")
 if (connectionPool):
     print("Connection pool created successfully")
 
