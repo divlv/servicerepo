@@ -145,4 +145,6 @@ scripts/setup_environment.bat
 ~$p
 .sass-cache
 .idea
+.vagrant
+parser/*.html
 

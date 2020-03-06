@@ -1,0 +1,29 @@
+version: "3"
+services:
+  dbcontainer:
+    image: postgres:latest
+    container_name: dbcontainer
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+    - 5432
+    ports:
+      - 5432:5432
+    environment:
+         - POSTGRES_PASSWORD=scheme54inverse63Frenzy
+         - POSTGRES_USER=sreapp
+         - POSTGRES_DB=servicerepo
+    restart: unless-stopped
+
+  servicerepo:
+    image: dimedrol/servicerepo:latest
+    container_name: servicerepo
+    expose:
+      - 18000
+    ports:
+      - 18000:18000
+    restart: always
+    depends_on:
+      - dbcontainer
+volumes:
+  postgres-data:
