@@ -9,10 +9,10 @@ from psycopg2 import pool
 
 minConnection = 5
 maxConnection = 20
-# Keep calm, GitHub password crawlers. Go hack example.com!
+# Keep calm, GitHub password crawlers. Localhost is here...
 connectionPool = psycopg2.pool.ThreadedConnectionPool(minConnection, maxConnection, user="sreapp",
                                                       password="scheme54inverse63Frenzy",
-                                                      host="postgres.example.com", port="5432", database="servicerepo")
+                                                      host="127.0.0.1", port="15432", database="servicerepo")
 if (connectionPool):
     print("Connection pool created successfully")
 
