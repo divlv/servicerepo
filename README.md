@@ -11,11 +11,30 @@ Searchable repository of REST/JSON endpoints.
 
 ## How to use all this?
 
-Simple.
-1. Create database `servicerepo` and appropriate user. Execute SQL commands from `database/servicerepo.sql` file. ATTENTION! Use **Postgresql 12** database due to specific JSON-data syntax.
-2. Fill the database table with `parser/parser.py`: e.g. `python parser.py generated_API_reference.html`
-3. Edit your system's (e.g. Ubuntu/Debian Linux) `/etc/hosts` file: add IP record for `postgres.example.com` domain, e.g. `192.168.55.133 postgres.example.com` - use IP of your Postgresql server.
-4. Docker image is available from Docker Hub. So, simply run it like this: `docker run --net=host dimedrol/servicerepo`
-5. Go to your Docker host's IP (where Docker container was started) port 18000. (e.g. 192.168.1.50:18000)
+Let's use a Vagrant instance.
+
+1. Make sure Oracle Virtual Box and HashiCorp Vagrant are installed on your target system
+
+2. Checkout the source from GitHub: `git clone https://github.com/divlv/servicerepo`
+
+3. Go to `servicerepo` directory
+
+4. Start your Vagrant instance: `vagrant up`. Wait for machine to boot and provision. This may take a few minutes first time...
+
+5. After Vagrant instance started, go to `http://127.0.0.1:18000` - you should see home page of Service Repo project.
+
+6. Use PostgreSQL client and connect to `jdbc:postgresql://127.0.0.1:15432/servicerepo` (JDBC driver used here). User: `sreapp`, password: `scheme54inverse63Frenzy`
+
+7. Switch to your local `servicerepo` directory; create initial database structure, using `servicerepo/database/servicerepo.sql` file.
+
+8. To insert data, we use Python 3.6+ on your current machine. Make sure it is installed and all requirements are present as well: `cd servicerepo; pip install -r requirements.txt`
+
+9. Assuming we've got our Postman/Documentarian html file here, insert data in the database, running on vagrant instance: `servicerepo\parser> python parser.py index.html` (many output information is expected at this step)
+
+10. With your browser press "Show all" button - there should be many of just insterted services
+
+11. Enjoy.
+
+12. After your work is done, don't forget to switch off your Vagrant instance: run `vagrant halt` from the `servicerepo` directory. Next time start the instance as before: `vagrant up` from the `servicerepo` directory.
 
 eof   
