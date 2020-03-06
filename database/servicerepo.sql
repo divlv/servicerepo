@@ -1,3 +1,8 @@
+-- ### Already created/granted by Dockerized PostgreSQL ###
+-- create database servicerepo;
+-- create user sreapp with encrypted password 'scheme54inverse63Frenzy';
+-- grant all privileges on database servicerepo to sreapp;
+
 DROP TABLE if exists service_repo;
 CREATE TABLE service_repo( 
     id BIGSERIAL,
@@ -13,9 +18,3 @@ CREATE TABLE service_repo(
     deleted int DEFAULT 0 NOT NULL,   
     insdat timestamp DEFAULT now() NOT NULL
 );
-
-create database servicerepo;
-create user sreapp with encrypted password 'scheme54inverse63Frenzy';
-
-grant all privileges on database servicerepo to sreapp;
-
