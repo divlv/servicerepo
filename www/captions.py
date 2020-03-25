@@ -22,12 +22,7 @@ b_findall="Show all"
 #
 err_emptyq="Empty search query"
 
-###
-menu_main="Home"
-menu_news="Новости"
-menu_contacts="Контакты"
-menu_news="Новости"
-menu_about="О проекте"
+
 
 
 
